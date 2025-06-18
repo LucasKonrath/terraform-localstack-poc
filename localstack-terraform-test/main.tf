@@ -1,4 +1,3 @@
-
 # Create an S3 Bucket
 resource "aws_s3_bucket" "my_bucket" {
   # checkov:skip=CKV2_AWS_62: "Ensure S3 buckets should have event notifications enabled"
@@ -338,4 +337,4 @@ resource "aws_instance" "app_server" {
   tags = {
     Name = "ExampleAppServerInstance"
   }
-} 
+}

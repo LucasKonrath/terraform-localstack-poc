@@ -82,6 +82,56 @@ The provided tests include also examples to verify that the S3 bucket is deploye
 
 The LocalStack Docker Container provides a local development environment that emulates various AWS services, allowing developers to test and iterate on their applications without incurring costs on the actual AWS Cloud.
 
+## LocalStack Service Limitations
+
+⚠️ **Important Note**: LocalStack Free version has limited service support. Some AWS services require LocalStack Pro (paid version).
+
+### Services Available in LocalStack Free:
+- ✅ S3 (Simple Storage Service)
+- ✅ DynamoDB
+- ✅ Lambda
+- ✅ CloudWatch (basic functionality)
+- ✅ IAM (basic functionality)
+- ✅ EC2 (basic functionality)
+- ✅ Step Functions
+- ✅ SQS, SNS, SES
+
+### Services Requiring LocalStack Pro:
+- ❌ **Auto Scaling Groups** - Not available in free version
+- ❌ **Application Load Balancer (ALB)** - Not available in free version
+- ❌ **Network Load Balancer (NLB)** - Not available in free version
+- ❌ **VPC (advanced features)** - Limited in free version
+- ❌ **RDS** - Not available in free version
+- ❌ **EKS** - Not available in free version
+
+### Adding Auto Scaling Groups
+
+If you want to test Auto Scaling Groups locally, you have several options:
+
+1. **Upgrade to LocalStack Pro**: Get a subscription at [LocalStack Pro](https://localstack.cloud/pricing/) which includes Auto Scaling Groups and other advanced services.
+
+2. **Use AWS for Testing**: Deploy your Terraform configuration directly to AWS for testing Auto Scaling Groups (this will incur AWS costs).
+
+3. **Alternative Approach**: For local development, you can simulate Auto Scaling Group behavior by creating multiple EC2 instances manually in your Terraform configuration.
+
+### Example: Simulating Auto Scaling with Multiple EC2 Instances
+
+```hcl
+# Alternative to Auto Scaling Group for LocalStack
+resource "aws_instance" "app_servers" {
+  count         = 3  # Simulate desired capacity
+  ami           = "ami-830c94e3"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "App-Server-${count.index + 1}"
+    Type = "Simulated-ASG"
+  }
+}
+```
+
+For more information about LocalStack service coverage, visit: https://docs.localstack.cloud/references/coverage/
+
 ## Terraform Test
 
 ### Run Local Stack Container
