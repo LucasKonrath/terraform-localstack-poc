@@ -330,3 +330,12 @@ resource "aws_s3_object" "object" {
   source     = "${path.root}/${var.s3_object_key}"
   depends_on = [aws_s3_bucket.my_bucket, aws_s3_bucket_notification.bucket_notification]
 }
+
+resource "aws_instance" "app_server" {
+  ami           = "ami-830c94e3"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "ExampleAppServerInstance"
+  }
+} 
